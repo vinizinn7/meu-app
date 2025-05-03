@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MeuApp de Tarefas</title>
+  <link rel="manifest" href="manifest.json" />
+ <meta name="theme-color" content="#4caf50" />
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    #app {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px;
+      width: 100%;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      background: #eee;
+      margin-top: 5px;
+      display: flex;
+      justify-content: space-between;
+      border-radius: 5px;
+    }
+    li.concluida {
+      text-decoration: line-through;
+      background: #c8e6c9;
+    }
+    .botoes {
+      display: flex;
+      gap: 5px;
+    }
+    .botoes button {
+      flex: 1;
+      background: #f44336;
+    }
+    .botoes button:first-child {
+      background: #2196f3;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>Minhas Tarefas</h1>
+    <input type="text" id="novaTarefa" placeholder="Digite uma tarefa..." />
+    <button onclick="adicionarTarefa()">Adicionar</button>
+    <ul id="lista"></ul>
+  </div>
+
+  <script>
+    const input = document.getElementById('novaTarefa');
+    const lista = document.getElementById('lista');
+
+    function adicionarTarefa() {
+      const texto = input.value.trim();
+      if (texto === '') return;
+
+      const li = document.createElement('li');
+      li.innerHTML = `
+        ${texto}
+        <div class="botoes">
+          <button onclick="concluir(this)">✔</button>
+          <button onclick="apagar(this)">🗑</button>
+        </div>
+      `;
+      lista.appendChild(li);
+      input.value = '';
+    }
+
+    function concluir(botao) {
+      const li = botao.closest('li');
+      li.classList.toggle('concluida');
+    }
+
+    function apagar(botao) {
+      const li = botao.closest('li');
+      li.remove();
+    }
+    if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
+  </script>
+</body>
+</html>
